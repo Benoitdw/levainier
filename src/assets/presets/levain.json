@@ -1,0 +1,42 @@
+{
+  "id": "levain",
+  "label": "Pain au levain",
+  "sections": [
+    {
+      "id": "petrissage",
+      "name": "Pétrissage",
+      "steps": [
+        { "name": "Autolyse (farine + eau)", "dureeMin": 45 },
+        { "name": "Incorporation levain + sel", "dureeMin": 10 },
+        { "name": "Pétrissage", "dureeMin": 10 }
+      ]
+    },
+    {
+      "id": "pointage",
+      "name": "Pointage",
+      "steps": [
+        { "name": "Rabat 1", "dureeMin": 30 },
+        { "name": "Rabat 2", "dureeMin": 30 },
+        { "name": "Rabat 3", "dureeMin": 30 },
+        { "name": "Repos final", "dureeMin": 90 }
+      ]
+    },
+    {
+      "id": "appret",
+      "name": "Apprêt",
+      "steps": [
+        { "name": "Préfaçonnage + repos", "dureeMin": 20 },
+        { "name": "Façonnage + apprêt", "dureeMin": 60 }
+      ]
+    },
+    {
+      "id": "cuisson",
+      "name": "Cuisson",
+      "steps": [
+        { "name": "Préchauffage cocotte (250°C)", "dureeMin": 45 },
+        { "name": "Couvert", "dureeMin": 20 },
+        { "name": "Découvert", "dureeMin": 25 }
+      ]
+    }
+  ]
+}

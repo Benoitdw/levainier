@@ -1,0 +1,66 @@
+{
+  "id": "levure",
+  "label": "Pain à la levure",
+  "sections": [
+    {
+      "id": "petrissage",
+      "name": "Pétrissage",
+      "steps": [
+        {
+          "name": "Autolyse ",
+          "dureeMin": 15
+        },
+        {
+          "name": "Pétrissage",
+          "dureeMin": 15
+        }
+      ]
+    },
+    {
+      "id": "pointage",
+      "name": "Pointage",
+      "steps": [
+        {
+          "name": "Premier rabat",
+          "dureeMin": 30
+        },
+        {
+          "name": "Second rabat",
+          "dureeMin": 30
+        },
+        {
+          "name": "Troisième rabat",
+          "dureeMin": 30
+        },
+        {
+          "name": "Quatrième rabat",
+          "dureeMin": 30
+        }
+      ]
+    },
+    {
+      "id": "appret",
+      "name": "Apprêt",
+      "steps": [
+        {
+          "name": "Façonnage + 2ème pousse",
+          "dureeMin": 45
+        }
+      ]
+    },
+    {
+      "id": "cuisson",
+      "name": "Cuisson",
+      "steps": [
+        {
+          "name": "Cuisson dans cocotte fermée (250°C)",
+          "dureeMin": 25
+        },
+        {
+          "name": "Cuisson dans cocotte ouverte (220°C)",
+          "dureeMin": 25
+        }
+      ]
+    }
+  ]
+}
