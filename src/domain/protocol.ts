@@ -16,14 +16,14 @@ export function encodeProtocol(label: string, sections: ChronoSection[]): string
     })),
   };
   const json = JSON.stringify(payload);
-  const b64 = Buffer.from(json, 'utf-8').toString('base64');
+  const b64 = btoa(unescape(encodeURIComponent(json)));
   return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 }
 
 export function decodeProtocol(encoded: string): ChronoSection[] | null {
   try {
     const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
-    const json = Buffer.from(b64, 'base64').toString('utf-8');
+    const json = decodeURIComponent(escape(atob(b64)));
     const payload = JSON.parse(json) as SharePayload;
     return payload.sections.map(s => ({
       id: s.id ?? Crypto.randomUUID(),
@@ -34,7 +34,8 @@ export function decodeProtocol(encoded: string): ChronoSection[] | null {
         dureeMin: st.dureeMin,
       })),
     }));
-  } catch {
+  } catch (e) {
+    console.log('[decodeProtocol] error:', e);
     return null;
   }
 }
@@ -47,13 +48,13 @@ export function buildShareUrl(label: string, sections: ChronoSection[]): string 
 // ── QR Code (format v2 compressé, préfixe "z.") ───────────────────────────────
 
 function toB64url(bytes: Uint8Array): string {
-  const b64 = Buffer.from(bytes).toString('base64');
+  const b64 = btoa(String.fromCharCode(...bytes));
   return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 }
 
 function fromB64url(s: string): Uint8Array {
   const b64 = s.replace(/-/g, '+').replace(/_/g, '/');
-  return new Uint8Array(Buffer.from(b64, 'base64'));
+  return Uint8Array.from(atob(b64), c => c.charCodeAt(0));
 }
 
 export function encodeQRPayload(label: string, sections: ChronoSection[]): string {
@@ -89,7 +90,8 @@ export function decodeQRPayload(encoded: string): ChronoSection[] | null {
 
     // Format v1 rétrocompatible
     return decodeProtocol(encoded);
-  } catch {
+  } catch (e) {
+    console.log('[decodeQRPayload] error:', e);
     return null;
   }
 }

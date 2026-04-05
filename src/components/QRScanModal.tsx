@@ -16,14 +16,17 @@ export function QRScanModal({ visible, onClose, onProtocolScanned }: Props) {
   const [permission, requestPermission] = useCameraPermissions();
 
   function handleBarcodeScanned({ data }: { data: string }) {
+    console.log('[QR] data scanned:', data);
     if (scanned) return;
     setScanned(true);
 
     try {
       const url = new URL(data);
       const encoded = url.searchParams.get('p');
+      console.log('[QR] param p:', encoded);
       if (encoded) {
         const sections = decodeQRPayload(encoded);
+        console.log('[QR] decoded sections:', JSON.stringify(sections));
         if (sections) {
           onProtocolScanned(sections);
           onClose();

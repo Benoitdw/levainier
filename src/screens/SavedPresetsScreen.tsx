@@ -7,10 +7,11 @@ import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useTimerStore } from '../store/timerStore';
-import type { SavedPreset } from '../domain/types';
+import type { SavedPreset, ChronoSection } from '../domain/types';
 import { buildShareUrl, serializePreset, slugify } from '../domain/protocol';
 import { computeTotalSeconds, formatTotalLabel } from '../domain/timerEngine';
 import { colors, spacing, radius, typography } from '../theme';
+import { QRScanModal } from '../components/QRScanModal';
 import type { RootStackParamList } from '../../App';
 
 type Props = {
@@ -22,6 +23,12 @@ export function SavedPresetsScreen({ navigation }: Props) {
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editLabel, setEditLabel] = useState('');
+  const [showQR, setShowQR] = useState(false);
+
+  function handleQRScanned(sections: ChronoSection[]) {
+    setSections(sections);
+    navigation.navigate('Config');
+  }
 
   function handleEdit(preset: SavedPreset) {
     setEditingId(preset.id);
@@ -135,6 +142,17 @@ export function SavedPresetsScreen({ navigation }: Props) {
           </View>
         ))}
       </ScrollView>
+
+      {/* Bouton scan QR flottant */}
+      <TouchableOpacity style={styles.qrFab} onPress={() => setShowQR(true)}>
+        <Text style={styles.qrFabText}>⬛ Scanner</Text>
+      </TouchableOpacity>
+
+      <QRScanModal
+        visible={showQR}
+        onClose={() => setShowQR(false)}
+        onProtocolScanned={handleQRScanned}
+      />
 
       {/* Modale renommage */}
       <Modal visible={!!editingId} transparent animationType="fade">
@@ -292,6 +310,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
   },
   confirmText: {
+    color: colors.white,
+    fontWeight: '700',
+    fontSize: 15,
+  },
+  qrFab: {
+    position: 'absolute',
+    bottom: spacing.xl,
+    right: spacing.lg,
+    backgroundColor: colors.copper,
+    borderRadius: radius.full,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
+  qrFabText: {
     color: colors.white,
     fontWeight: '700',
     fontSize: 15,
