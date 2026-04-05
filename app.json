@@ -31,7 +31,9 @@
         "CAMERA",
         "VIBRATE",
         "RECEIVE_BOOT_COMPLETED",
-        "ACCESS_NOTIFICATION_POLICY"
+        "ACCESS_NOTIFICATION_POLICY",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
       ],
       "intentFilters": [
         {
@@ -44,12 +46,22 @@
               "pathPrefix": "/laCuisineDeBenoit/pain/chrono/"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         },
         {
           "action": "VIEW",
-          "data": [{ "scheme": "levainier" }],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "data": [
+            {
+              "scheme": "levainier"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -58,7 +70,10 @@
       [
         "expo-notifications",
         {
-          "sounds": ["./src/assets/sounds/bell.wav", "./src/assets/sounds/alarm.wav"]
+          "sounds": [
+            "./src/assets/sounds/bell.wav",
+            "./src/assets/sounds/alarm.wav"
+          ]
         }
       ],
       [
@@ -67,6 +82,12 @@
           "cameraPermission": "Pour scanner les QR codes de protocoles Levainier."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "0ff29999-7d88-4cf2-bcfa-4d8c1e6a11ad"
+      }
+    },
+    "owner": "ermite"
   }
 }
