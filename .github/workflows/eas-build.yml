@@ -1,4 +1,4 @@
-name: EAS Build (Android APK)
+name: EAS Build / Update
 
 on:
   push:
@@ -7,12 +7,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build Android APK
+  deploy:
+    name: Build or Update
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -29,5 +31,17 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Build APK
+      - name: Check native changes
+        id: native
+        run: |
+          git diff HEAD~1 --name-only | grep -qE "package\.json|app\.json" \
+            && echo "changed=true" >> $GITHUB_OUTPUT \
+            || echo "changed=false" >> $GITHUB_OUTPUT
+
+      - name: EAS Build (changement natif détecté)
+        if: steps.native.outputs.changed == 'true'
         run: eas build --platform android --profile preview --non-interactive
+
+      - name: EAS Update (JS uniquement)
+        if: steps.native.outputs.changed == 'false'
+        run: eas update --branch production --message "${{ github.event.head_commit.message }}"
