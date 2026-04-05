@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet, Alert } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { colors, spacing, radius, typography } from '../theme';
-import { decodeProtocol } from '../domain/protocol';
+import { decodeQRPayload } from '../domain/protocol';
 import type { ChronoSection } from '../domain/types';
 
 interface Props {
@@ -23,7 +23,7 @@ export function QRScanModal({ visible, onClose, onProtocolScanned }: Props) {
       const url = new URL(data);
       const encoded = url.searchParams.get('p');
       if (encoded) {
-        const sections = decodeProtocol(encoded);
+        const sections = decodeQRPayload(encoded);
         if (sections) {
           onProtocolScanned(sections);
           onClose();
