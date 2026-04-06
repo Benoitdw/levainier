@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppState, AppStateStatus, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Linking from 'expo-linking';
 
+import { SplashScreen } from './src/screens/SplashScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { ConfigScreen } from './src/screens/ConfigScreen';
 import { ActiveScreen } from './src/screens/ActiveScreen';
@@ -26,6 +27,7 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
   const { hydrate, applyElapsed, setSections, phase } = useTimerStore();
 
   // Initialisation au démarrage
@@ -68,6 +70,10 @@ export default function App() {
   }, []);
 
   const initialRoute = phase === 'active' ? 'Active' : 'Home';
+
+  if (showSplash) {
+    return <SplashScreen onFinish={() => setShowSplash(false)} />;
+  }
 
   return (
     <NavigationContainer>
